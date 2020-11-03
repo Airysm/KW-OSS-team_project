@@ -7,8 +7,8 @@ import random
 
 
 class Team(commands.Cog):
-    teamSize = 0;
-    playerSize = 0;
+    teamSize = 0
+    playerSize = 0
     
     teamList = []
     teamJoinCount = 0
