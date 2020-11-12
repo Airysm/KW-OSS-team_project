@@ -18,7 +18,7 @@ class R6Stat(commands.Cog, name='R6Stat'):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name='r6stat')
+    @commands.command(name='레식')
     async def r6stat(self, ctx, userName, section='overall'):
         html = requests.get(r6statURL + userName + '/' + self.platform + '/').text
         bs = BeautifulSoup(html, 'html.parser')
@@ -56,7 +56,7 @@ class R6Stat(commands.Cog, name='R6Stat'):
             await ctx.send('플레이어가 존재하지 않습니다.')
         
         
-    @commands.command(name='r6platform')
+    @commands.command(name='레식플랫폼')
     async def r6platform(self, ctx, _platform):
         for pf in platformList:
             if pf == _platform:

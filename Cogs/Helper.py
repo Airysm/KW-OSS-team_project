@@ -9,7 +9,7 @@ class Helper(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name='help', help='도움말', usage='!!help')
+    @commands.command(name='명령어', help='도움말', usage='!!help')
     async def help_command(self, ctx, func=None):
         cogList = ['R6Stat', 'Steam', 'Team']
         if func is None:
