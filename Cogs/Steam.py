@@ -33,13 +33,7 @@ class Steam(commands.Cog, name='Steam'):
         html = requests.get(userURL).text
         userbs = BeautifulSoup(html, 'html.parser')
         
-        #search = bs.select('.search_row')
-        #if search:
         if userbs.select('.profile_page'):
-            #userURL = search[0].select('.searchPersonaName')[0].get('href')
-            #userhtml = requests.get(userURL).text
-            #userbs = BeautifulSoup(userhtml, 'html.parser')
-            
             realUserName = userbs.select('.actual_persona_name')[0].text
             userIconURL = userbs.select('.playerAvatarAutoSizeInner > img')[0].get('src')
             
