@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
+r6serverStatusURL='https://rainbow6.ubisoft.com/status/'
 r6statPlayerURL='https://r6stats.com/stats/'
 r6statURL='https://r6stats.com/search/'
 platformList = ['pc', 'ps4', 'xbox']
@@ -65,6 +66,11 @@ class R6Stat(commands.Cog, name='R6Stat'):
         
         embed = discord.Embed(title=f'레식 전적 검색 플랫폼이 {self.platform.upper()}로 변경되었습니다.', color=0xEF0000)
         await ctx.send(embed=embed)
+    
+    @commands.command(name='레식서버')
+    async def r6server(self, ctx):
+        embed=discord.Embed(title='레식 서버', url=r6serverStatusURL, color=0xFFFFFE)
+        await ctx.send(content='레식 서버', embed=embed)
         
 
 
