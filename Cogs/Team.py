@@ -18,7 +18,7 @@ class Team(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name='teamset', help='팀 세팅', usage='!!team 팀인원 플레이어수')
+    @commands.command(name='팀세팅', help='팀 세팅', usage='!!team 팀인원 플레이어수')
     async def team_setting(self, ctx, _teamSize: int, _playerSize: int):
         if _teamSize > _playerSize:
             await ctx.send('팀 인원보다 플레이어의 수가 더 많습니다!!')
@@ -37,7 +37,7 @@ class Team(commands.Cog):
             embed.add_field(name='플레이어 수', value=self.playerSize)
             await ctx.send(embed=embed)
         
-    @commands.command(name='team', help='팀', usage='!!team')
+    @commands.command(name='팀', help='팀', usage='!!team')
     async def team(self, ctx):
         if self.teamSize == 0:
             await ctx.send('팀 세팅을 해주세요.')
@@ -53,7 +53,7 @@ class Team(commands.Cog):
         
             await ctx.send(embed=embed)
         
-    @commands.command(name='teamjoin', help='팀 참가', usage='!!teamjoin')
+    @commands.command(name='팀참가', help='팀 참가', usage='!!teamjoin')
     async def team_join(self, ctx):
         if self.teamSize ==  0:
             await ctx.send('팀 세팅을 해주세요.')

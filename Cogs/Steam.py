@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# r6stat.py
+# steam.py
 
 import discord
 from discord.ext import commands
@@ -23,7 +23,7 @@ class Steam(commands.Cog, name='Steam'):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name='suser')
+    @commands.command(name='스팀유저')
     async def suser(self, ctx, userName):
         userURL = ''
         if len(userName) == 17 and userName.isdigit():
@@ -33,13 +33,7 @@ class Steam(commands.Cog, name='Steam'):
         html = requests.get(userURL).text
         userbs = BeautifulSoup(html, 'html.parser')
         
-        #search = bs.select('.search_row')
-        #if search:
         if userbs.select('.profile_page'):
-            #userURL = search[0].select('.searchPersonaName')[0].get('href')
-            #userhtml = requests.get(userURL).text
-            #userbs = BeautifulSoup(userhtml, 'html.parser')
-            
             realUserName = userbs.select('.actual_persona_name')[0].text
             userIconURL = userbs.select('.playerAvatarAutoSizeInner > img')[0].get('src')
             
@@ -68,7 +62,7 @@ class Steam(commands.Cog, name='Steam'):
             await ctx.send('플레이어가 존재하지 않습니다.')
         
         
-    @commands.command(name='sgame')
+    @commands.command(name='게임')
     async def sgame(self, ctx, *, gameName):
         html = requests.get(gameFindURL + gameName).text
         bs = BeautifulSoup(html, 'html.parser')
@@ -120,7 +114,7 @@ class Steam(commands.Cog, name='Steam'):
             await ctx.send('게임이 존재하지 않습니다.')
             
     
-    @commands.command(name='sgsearch')
+    @commands.command(name='게임검색')
     async def sgsearch(self, ctx, *, gameName):
         html = requests.get(gameFindURL + gameName).text
         bs = BeautifulSoup(html, 'html.parser')
@@ -191,7 +185,7 @@ class Steam(commands.Cog, name='Steam'):
         await message.edit(embed=embed)
 
 
-    @commands.command(name='sgsetsearchsize')
+    @commands.command(name='게임검색크기')
     async def sgsetsearchsize(self, ctx, searchSize: int):
         if searchSize > 0 and searchSize <= 10:
             self.gameSearchSize = searchSize
