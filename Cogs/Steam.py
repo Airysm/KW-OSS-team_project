@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# r6stat.py
+# steam.py
 
 import discord
 from discord.ext import commands
