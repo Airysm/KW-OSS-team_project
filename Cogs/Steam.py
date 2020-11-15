@@ -14,7 +14,7 @@ userFindURL='https://steamcommunity.com/id/'
 userFindURL_ID='https://steamcommunity.com/profiles/'
 gameFindURL=f'https://store.steampowered.com/search/{koreanParam}&term='
 
-numberEmoji = [ '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟' ]
+numberEmoji = [ '0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟' ]
         
 class Steam(commands.Cog, name='Steam'):
     gameSearchSize = 5
@@ -127,7 +127,7 @@ class Steam(commands.Cog, name='Steam'):
         
         if titleSize > self.gameSearchSize:
             titleSize = self.gameSearchSize
-        titleStr = ''
+        titleStr = '0. 취소\n'
         for i, t in enumerate(titles[:titleSize]):
             titleStr += f'{i+1}. {t.text}\n'
         embed_gameList = discord.Embed(title='원하는 게임을 선택하세요', description=titleStr, color=0x171a21)
