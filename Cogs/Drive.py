@@ -8,6 +8,7 @@ import discord
 from discord.ext import commands
 
 
+DATA_PATH = 'Data'
 DRIVE_PATH = 'Drive'
 DRIVE_FILE_ALL_DATA = 'File_ALL_Data.json'
 DRIVE_FILE_DATA = 'File_Data.json'
@@ -17,19 +18,22 @@ DRIVE_FILE_DATA = 'File_Data.json'
 class Drive(commands.Cog, name='Drive'):
     def __init__(self, bot):
         self.bot = bot
-        if not os.path.exists(DRIVE_PATH):
-            os.mkdir(DRIVE_PATH)
+        if not os.path.exists(DATA_PATH):
+            os.mkdir(DATA_PATH)
 
 
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.attachments:
-            guildPath = f'{DRIVE_PATH}/{message.guild.id}'
+            guildPath = f'{DATA_PATH}/{message.guild.id}'
             if not os.path.exists(guildPath):
                 os.mkdir(guildPath)
                 f = open(f'{guildPath}/_{message.guild.name}', 'w')
                 f.close()
-            
+                
+            drivePath = f'{guildPath}/{DRIVE_PATH}'
+            if not os.path.exists(drivePath):
+                os.mkdir(drivePath)
             
             dTime = datetime.datetime.today()
             curDate = dTime.strftime('%Y%m%d')
