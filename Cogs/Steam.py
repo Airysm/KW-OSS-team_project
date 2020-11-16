@@ -126,7 +126,7 @@ class Steam(commands.Cog, name='Steam'):
             return
         
         if titleSize > self.gameSearchSize:
-            titleSize = self.gameSearchSize
+            titleSize = self.gameSearchSize + 1
         titleStr = '0. 취소\n'
         for i, t in enumerate(titles[:titleSize]):
             titleStr += f'{i+1}. {t.text}\n'
