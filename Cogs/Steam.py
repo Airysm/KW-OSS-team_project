@@ -133,6 +133,7 @@ class Steam(commands.Cog, name='Steam'):
         embed_gameList = discord.Embed(title='원하는 게임을 선택하세요', description=titleStr, color=0x171a21)
         message = await ctx.send(embed=embed_gameList)
         
+        titleSize += 1
         for i in range(titleSize):
             await message.add_reaction(numberEmoji[i])
             
