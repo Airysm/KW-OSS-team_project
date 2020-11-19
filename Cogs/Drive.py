@@ -25,6 +25,9 @@ class Drive(commands.Cog, name='Drive'):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        if message.author == self.bot.user:
+            return
+        
         if message.attachments:
             guildPath = f'{DATA_PATH}/{message.guild.id}'
             if not os.path.exists(guildPath):
