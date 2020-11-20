@@ -53,7 +53,7 @@ class R6Stat(commands.Cog, name='R6Stat'):
             elif section == 'tp':
                 info = bs.select('.team-play-stats-card .stats-card-item')
             
-            embed = discord.Embed(title=f'{playerName}', description=f'👍 Lv.{level} - ⚔️ K/D: {kdRatio}', url=f'{r6statPlayerURL}{playerId}/', color=0x8E35FF)
+            embed = discord.Embed(title=f'{playerName}', description=f'👍 Lv.{level} - ⚔️ K/D: {kdRatio}', url=f'{r6statPlayerURL}{playerId}/', color=0xFFFFFE)
             embed.add_field(name='Play Mode', value=sectionList[section], inline=False)
 
             for infoLabel, infoValue in info:
