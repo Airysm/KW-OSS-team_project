@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-
 # bot.py
-import os
 
+import os
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -32,7 +31,7 @@ async def on_ready():
     
     
 #####
-@bot.command(name='Load')
+@bot.command(name='로드')
 async def load_commands(ctx, extension):
     await ctx.message.delete()
     bot.load_extension(f'Cogs.{extension}')
@@ -40,7 +39,7 @@ async def load_commands(ctx, extension):
     await asyncio.sleep(0.5)
     await m.delete()
     
-@bot.command(name='Unload')
+@bot.command(name='언로드')
 async def unload_commands(ctx, extension):
     await ctx.message.delete()
     bot.unload_extension(f'Cogs.{extension}')
@@ -48,7 +47,7 @@ async def unload_commands(ctx, extension):
     await asyncio.sleep(0.5)
     await m.delete()
 
-@bot.command(name='Reload')
+@bot.command(name='리로드')
 async def reload_commands(ctx, extension=None):
     await ctx.message.delete()
     if extension is None:
