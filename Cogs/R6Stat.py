@@ -150,6 +150,52 @@ class R6Stat(commands.Cog, name='R6Stat'):
                     embed.add_field(name=f'팀 {i + 1} - K/D - {kdRatio}', value='없음', inline=False)
         
             await ctx.send(embed=embed)
+    
+    updateQueue = []
+    @commands.command(name='레식업데이트')
+    async def r6userUpdate(self, ctx):
+        if ctx.message.guild.id in self.updateQueue:
+            await ctx.message.delete()
+            message = await ctx.send('이미 레식 계정 정보를 업데이트 하는 중입니다.')
+            await asyncio.sleep(3)
+            await message.delete()
+            return
+        
+        self.updateQueue.append(ctx.message.guild.id)
+        await ctx.message.delete()
+        
+        userData = f'{DATA_PATH}/{ctx.message.guild.id}/{TEAM_PATH}/{R6USER_DATA}'
+        
+        if not os.path.exists(userData):
+            await ctx.send('등록된 플레이어가 존재하지 않습니다.')
+        else:
+            message = await ctx.send('레식 계정 정보를 업데이트 하는 중입니다.')
+            
+            data = dict()
+            with open(userData, 'r+', -1, 'utf-8') as f:
+                data = json.load(f)
+                for d in data:
+                    html = requests.get(r6statURL + data[d]['r6Name'] + '/' + self.platform + '/').text
+                    bs = BeautifulSoup(html, 'html.parser')
+                    
+                    if(bs.select('.page-stats-player')):
+                        playerName = bs.select('.player-info__player__username')[0].text
+                        playerLevel = bs.select('.quick-stat__value')[1].text
+                        kdRatio = bs.select('.quick-stat__value')[2].text
+                        winRate = bs.select('.queue-stats-card.block__overall .stats-card-item')[1].select('.stats-card-item__value')[0].text
+                        
+                        curDate = datetime.datetime.today().strftime('%Y/%m/%d-%X')
+                        
+                        userDataDict = { d: { 'discordName': data[d]['discordName'], 'discordNick': data[d]['discordNick'], 'updateTime': curDate, 'r6Name': playerName, 'level': playerLevel, 'kd': kdRatio, 'winRate': winRate } }
+                        data.update(userDataDict)
+                        
+            with open(userData, 'w', -1, 'utf-8') as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+            
+            await message.delete()
+            await ctx.send('레식 계정 정보가 업데이트 되었습니다.')
+        
+        self.updateQueue.remove(ctx.message.guild.id)
 
 
 def setup(bot):
