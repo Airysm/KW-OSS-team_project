@@ -196,6 +196,28 @@ class R6Stat(commands.Cog, name='R6Stat'):
             await ctx.send('레식 계정 정보가 업데이트 되었습니다.')
         
         self.updateQueue.remove(ctx.message.guild.id)
+        
+
+    @commands.command(name='레식유저')
+    async def r6userList(self, ctx):
+        userData = f'{DATA_PATH}/{ctx.message.guild.id}/{TEAM_PATH}/{R6USER_DATA}'
+        
+        if not os.path.exists(userData):
+            await ctx.send('등록된 플레이어가 존재하지 않습니다.')
+        else:
+            embed=discord.Embed(title='레식 계정 리스트', color=0x4298F5)
+            
+            with open(userData, 'r+', -1, 'utf-8') as f:
+                data = json.load(f)
+                updateTime = datetime.datetime.today()
+                for d in data:
+                    uTime = datetime.datetime.strptime(data[d]['updateTime'], '%Y/%m/%d-%X')
+                    if updateTime > uTime:
+                        updateTime = uTime
+                    embed.add_field(name=f'{data[d]["r6Name"]} - {data[d]["discordNick"]}', value=f'👍 Lv.{data[d]["level"]} - ⚔️ K/D: {data[d]["kd"]} - Win: {data[d]["winRate"]}', inline=False)
+                embed.description = f'최종 업데이트 : {updateTime}'
+
+            await ctx.send(embed=embed)
 
 
 def setup(bot):
