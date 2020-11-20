@@ -117,6 +117,39 @@ class R6Stat(commands.Cog, name='R6Stat'):
         
         else:
             await ctx.send(f'{userName} 계정이 존재하지 않습니다.')
+    
+    
+    
+    @commands.command(name='레식팀')
+    async def r6team(self, ctx):
+        userData = f'{DATA_PATH}/{ctx.message.guild.id}/{TEAM_PATH}/{R6USER_DATA}'
+        
+        if not os.path.exists(userData):
+            await ctx.send('등록된 플레이어가 존재하지 않습니다.')
+        else:
+            teamList = [[],[]]
+            kd = [0, 0]
+            team = {}
+            with open(userData, 'r+', -1, 'utf-8') as f:
+                data = json.load(f)
+                for d in data:
+                    team[data[d]['r6Name']] = data[d]['kd']
+                    
+            for i, (k, v) in enumerate(sorted(team.items(), reverse=True)):
+                teamList[i%2].append(k)
+                kd[i%2] += float(v)
+                    
+            embed = discord.Embed(title='레식 팀', color=0xADFC03)
+        
+            for i in range(len(teamList)):
+                kdRatio = 0
+                if len(teamList[i]) > 0:
+                    kdRatio = kd[i]/len(teamList[i])
+                    embed.add_field(name=f'팀 {i + 1} - K/D - {kdRatio}', value=', '.join(teamList[i]), inline=False)
+                else:
+                    embed.add_field(name=f'팀 {i + 1} - K/D - {kdRatio}', value='없음', inline=False)
+        
+            await ctx.send(embed=embed)
 
 
 def setup(bot):
