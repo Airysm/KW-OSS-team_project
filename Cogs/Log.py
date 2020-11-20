@@ -47,6 +47,68 @@ class Log(commands.Cog):
                 f.write(f'attachment - {message.attachments}\n')
             if message.embeds:
                 f.write(f'embed - {message.embeds[0].to_dict()}\n')
+                
+    
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        guildPath = f'{DATA_PATH}/{message.guild.id}'
+        if not os.path.exists(guildPath):
+            os.mkdir(guildPath)
+            f = open(f'{guildPath}/_{message.guild.name}', 'w')
+            f.close()
+            
+        logPath = f'{guildPath}/{LOG_PATH}'
+        if not os.path.exists(logPath):
+            os.mkdir(logPath)
+            
+        logPath += f'/{message.channel.id}'
+        if not os.path.exists(logPath):
+            os.mkdir(logPath)
+            f = open(f'{logPath}/_{message.channel.name}', 'w')
+            f.close()
+            
+        
+        dTime = datetime.datetime.today()
+        curDate = dTime.strftime('%Y%m%d')
+        curTime = dTime.strftime('%X:%f')
+        logFileName = f'Log_{curDate}.log'
+        with open(f'{logPath}/{logFileName}', 'a+', -1, 'utf-8') as f:
+            if type(message.author) is discord.user.User:
+                f.write(f'[{curTime}] [{message.channel.name}] [{MESSAGE_MODE[2]}] [{message.author}-{message.author.id}] [{message.id}] {message.content}\n')
+            else:
+                f.write(f'[{curTime}] [{message.channel.name}] [{MESSAGE_MODE[2]}] [{message.author.nick}-{message.author}-{message.author.id}] [{message.id}] {message.content}\n')
+            
+        
+    
+    @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        guildPath = f'{DATA_PATH}/{before.guild.id}'
+        if not os.path.exists(guildPath):
+            os.mkdir(guildPath)
+            f = open(f'{guildPath}/_{before.guild.name}', 'w')
+            f.close()
+            
+        logPath = f'{guildPath}/{LOG_PATH}'
+        if not os.path.exists(logPath):
+            os.mkdir(logPath)
+            
+        logPath += f'/{before.channel.id}'
+        if not os.path.exists(logPath):
+            os.mkdir(logPath)
+            f = open(f'{logPath}/_{before.channel.name}', 'w')
+            f.close()
+            
+        
+        dTime = datetime.datetime.today()
+        curDate = dTime.strftime('%Y%m%d')
+        curTime = dTime.strftime('%X:%f')
+        logFileName = f'Log_{curDate}.log'
+        with open(f'{logPath}/{logFileName}', 'a+', -1, 'utf-8') as f:
+            if type(before.author) is discord.user.User:
+                f.write(f'[{curTime}] [{before.channel.name}] [{MESSAGE_MODE[1]}] [{before.author}-{before.author.id}] [{before.id}] {before.content}\n')
+            else:
+                f.write(f'[{curTime}] [{before.channel.name}] [{MESSAGE_MODE[1]}] [{before.author.nick}-{before.author}-{before.author.id}] [{before.id}] {before.content}\n')
+            f.write(f'-> {after.content}\n')
         
     
     
