@@ -11,7 +11,7 @@ class Helper(commands.Cog):
     
     @commands.command(name='명령어', help='도움말', usage='!!help')
     async def help_command(self, ctx, func=None):
-        cogList = ['R6Stat', 'LoLStat', 'Steam', 'Team']
+        cogList = ['R6Stat', 'LoLStat', 'Steam', 'Team', 'MiniRPG']
         if func is None:
             embed = discord.Embed(title='Help', description='(╯°□°）╯︵ ┻━┻')
             for x in cogList:
@@ -31,7 +31,7 @@ class Helper(commands.Cog):
                             embed = discord.Embed(title=f'명령어 : {cmd}', description=cmd.help)
                             embed.add_field(name='사용법', value=cmd.usage)
                             await ctx.send(embed=embed)
-                            isCommandNone=False;
+                            isCommandNone=False
                             break
             if isCommandNone:
                 if func in cogList:
