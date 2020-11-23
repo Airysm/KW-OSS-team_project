@@ -116,7 +116,7 @@ class Drive(commands.Cog, name='Drive'):
                 await message.edit(content='시간 초과!!')
                 return
             else:
-                if ctx.author == msg.author and msg.content.isdigit():
+                if ctx.author == msg.author and ctx.channel == msg.channel and msg.content.isdigit():
                     selectIndex = int(msg.content)
                     if selectIndex == 0:
                         await msg.delete()
