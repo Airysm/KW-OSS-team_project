@@ -12,6 +12,7 @@ class Skill():
     DEX = 1
     STR = 1
     DEF = 1
+    cooltime = 0
 
     def 공격(self):
         return self.STR * 1
@@ -21,6 +22,13 @@ class Skill():
     
     def 힐(self):
         return self.INT * 2
+
+    def 스킬(self): # 쿨타임 3턴
+        if(self.cooltime == 0):
+            self.cooltime = 3
+            return self.INT * 3
+        else:
+            return 0
 
 class Boss(Skill):
     def __init__(self):
@@ -81,25 +89,25 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
         #embed = discord.Embed(title='원하는 스킬을 선택하세요', description='?', color=0x147AF3)
         #message = await ctx.send(embed=embed)
         await ctx.send("\"1번째 당신의 턴\"")
-        sleep(1)
 
         embed = discord.Embed(title='MiniRPG 실행어')
         embed.add_field(name='공격', value='\n'.join(['STR * 1']), inline=True)
         embed.add_field(name='힐', value='\n'.join(['INT * 2']), inline=True)
         embed.add_field(name='방어', value='\n'.join(['DEF * 1']), inline=True)
+        embed.add_field(name='스킬', value='\n'.join(['INT * 3']), inline=True)
         await ctx.send(embed=embed)
         sleep(1)
 
         while man.HP > 0 and dragon.HP > 0:
             check = 0
             msg = await ctx.bot.wait_for('message')
-            if ctx.author == msg.author:
-                if(msg.content.startswith('!!')):
+            if ctx.author == msg.author: # 명령어의 사용자의 메세지만 취급
+                if(msg.content.startswith('!!')): # 다른 명령어를 받을 경우 패스
                     continue
-                elif(msg.content == '힐'):
+                elif(msg.content == '힐'): # 자신에게 힐
                     await ctx.send('당신은 자신의 체력을 회복했습니다.')
                     Heal = 0
-                    if(man.HP + man.힐() > 100):
+                    if(man.HP + man.힐() > 100): # 최대체력이 100 이므로 안 넘어가게 체크
                         Heal = 100 - man.HP
                         man.HP = 100
                     else:
@@ -107,34 +115,64 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
                         Heal = man.힐()
                     await ctx.send('자신의 체력이 ' + str(Heal) + '만큼 올랐습니다.')
                     sleep(1)
-                    check = 1
-                elif(msg.content == '공격'):
+                    check = 1 # 자신의 턴을 무사히 완료
+                elif(msg.content == '공격'): # 보스에게 공격
                     await ctx.send('당신은 보스를 공격했습니다.')
                     dragon.HP = dragon.HP - man.공격()
                     await ctx.send('보스의 체력이 ' + str(man.공격()) + '만큼 줄어 ' + str(dragon.HP) + '가 되었습니다.')
                     sleep(1)
-                    check = 1
+                    check = 1 # 자신의 턴을 무사히 완료
+                elif(msg.content == '스킬'):
+                    skill_check = man.스킬()
+                    if(skill_check == 0):
+                        embed = discord.Embed(description='스킬의 쿨타임이 '+str(man.cooltime)+' 만큼 남았습니다.')
+                        await ctx.send(embed=embed)
+                        sleep(1)
+                    else:
+                        dragon.HP = dragon.HP - skill_check
+                        embed = discord.Embed(description='당신은 스킬을 사용하였습니다!')
+                        await ctx.send(embed=embed)
+                        sleep(1)
+                        embed = discord.Embed(description='보스의 체력이'+str(skill_check)+'만큼 줄어 '+str(dragon.HP)+'가 되었습니다.')
+                        await ctx.send(embed=embed)
+                        sleep(1)
+                        check = 1 # 자신의 턴을 무사히 완료
                 else:
                     await ctx.send('제대로 된 행동을 하지 못했습니다!')
+            # 자신의 턴이 제대로 완료 되었으면 보스의 턴 실행
             if(self.my_turn_check(check)):
                 await ctx.send('\"' + str(turn) + '번째 보스의 턴\"')
                 sleep(1)
-                turn = turn + 1
-                boss_act = self.Boss_Turn(dragon)
-                if(boss_act == 1):
-                    await ctx.send('보스가 당신을 공격했습니다! 당신의 체력: ' + str(man.HP))
+                if(turn == 10): # 10턴 까지 버틸 경우 유저 즉사
+                    man.HP = 0
+                    embed = discord.Embed(description='보스가 브레스를 발사했습니다!')
+                    await ctx.send(embed=embed)
                     sleep(1)
-                elif(boss_act == 2):
-                    await ctx.send('보스가 자신의 체력을 회복했습니다. 보스의 체력: ' + str(dragon.HP))
+                    embed = discord.Embed(description='당신은 브레스를 버티지 못했습니다...')
                     sleep(1)
+                elif(turn >= 5): # 5턴 이상일 때부터는 최종 패턴 돌입
+                    embed = discord.Embed(description='보스가 브레스를 준비중입니다!')
+                    await ctx.send(embed=embed)
+                    sleep(1)
+                else:
+                    boss_act = self.Boss_Turn(dragon) # 보스가 행동한 것에 따라 다른 리턴 값을 가짐
+                    if(boss_act == 1): # 보스가 공격했을 경우
+                        await ctx.send('보스가 당신을 공격했습니다! 당신의 체력: ' + str(man.HP))
+                        sleep(1)
+                    elif(boss_act == 2): # 보스가 자신의 체력을 회복했을 경우
+                        await ctx.send('보스가 자신의 체력을 회복했습니다. 보스의 체력: ' + str(dragon.HP))
+                        sleep(1)
+                turn = turn + 1 # 턴 수 증가
+                if(man.cooltime > 0):
+                    man.cooltime = man.cooltime - 1
                 await ctx.send('\"' + str(turn) + '번째 당신의 턴\"')
 
-        if(man.HP <= 0):
+        if(man.HP <= 0): # 유저의 HP 가 0 이하일 경우
             await ctx.send('당신은 쓰러졌습니다.. 패배.')
-        else:
+        else: # 보스의 HP 가 0 이하일 경우
             await ctx.send('보스를 쓰러트렸습니다! 성공.')
         
-        game_set = 0
+        game_set = 0 # 게임이 끝남
 
     @commands.command(name='RPG스킬')
     async def skill_info(self, ctx):
@@ -142,19 +180,21 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
         embed.add_field(name='공격', value='\n'.join(['STR * 1']), inline=True)
         embed.add_field(name='힐', value='\n'.join(['INT * 2']), inline=True)
         embed.add_field(name='방어', value='\n'.join(['DEF * 1']), inline=True)
+        embed.add_field(name='스킬', value='\n'.join(['INT * 3', '쿨타임 3턴']), inline=True)
         await ctx.send(embed=embed)
-    
+    # 보스가 자신의 턴에 행동해야 할 인공지능
     def Boss_Turn(self, boss):
-        if(boss.HP >= 20):
-            man.HP = man.HP - boss.공격()
-            if(man.HP < 0):
-                man.HP = 0
+        if(boss.HP >= 20): # 체력이 20 이상이면
+            man.HP = man.HP - boss.공격() # 공격
+            if(man.HP < 0): # 최소 체력이 0이므로 아래로 내려갈 경우
+                man.HP = 0 # 0으로 변경
             return 1
-        elif(boss.HP < 20):
-            boss.HP = boss.HP + boss.힐()
-            if(boss.HP > 100):
-                boss.HP = 100
+        elif(boss.HP < 20): # 체력이 20 이하이면
+            boss.HP = boss.HP + boss.힐() # 힐
+            if(boss.HP > 100): # 최대 체력이 100이므로 위로 올라갈 경우
+                boss.HP = 100 # 100으로 변경
             return 2
+    # 숫자에 따른 True, False 를 return 하기 위한 함수
     def my_turn_check(self, check):
         if(check == 0):
             return False
