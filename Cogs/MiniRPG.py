@@ -227,14 +227,21 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
             await ctx.send(embed=embed)
         game_set = 0 # 게임이 끝남
 
-    @commands.command(name='RPG스킬')
+    @commands.command(name='RPG설명')
     async def skill_info(self, ctx):
+        embed = discord.Embed(description='보스와 한번씩 번갈아가며 행동을 취하는 턴제 미니게임입니다.')
+        await ctx.send(embed = embed)
         embed = discord.Embed(title='MiniRPG 실행어')
         embed.add_field(name='공격', value='\n'.join(['STR * 1']), inline=True)
         embed.add_field(name='힐', value='\n'.join(['INT * 2']), inline=True)
-        embed.add_field(name='스킬', value='\n'.join(['INT * 3, 쿨타임 3초']), inline=True)
-        embed.add_field(name='전격', value='\n'.join(['1턴 행동불가']), inline=True)
+        embed.add_field(name='스킬', value='\n'.join(['INT * 3\n쿨타임 3턴']), inline=True)
+        embed.add_field(name='전격', value='\n'.join(['1턴 행동불가\n쿨타임 5턴']), inline=True)
         await ctx.send(embed=embed)
+        embed = discord.Embed(description='자신의 턴에 위의 단어 중 1개를 적으면 행동을 취합니다.')
+        await ctx.send(embed=embed)
+        embed = discord.Embed(description='체력이 먼저 0이 되는 쪽이 패배합니다.')
+        await ctx.send(embed=embed)
+
 
     # 보스가 자신의 턴에 행동해야 할 인공지능
     def Boss_Turn(self, boss):
