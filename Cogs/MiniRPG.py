@@ -29,7 +29,7 @@ class Skill():
         else:
             return 0
     
-    def 전격(self, boss):
+    def 전격(self, boss): # 쿨타임 5턴
         if(self.cooltime2 == 0):
             self.cooltime2 = 5
             boss.shock = True
