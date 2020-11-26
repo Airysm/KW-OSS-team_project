@@ -23,7 +23,7 @@ for filename in os.listdir('Cogs'):
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(status=discord.Status.idle, activity=discord.Game(name='( ͡° ͜ʖ ͡°)'))
+    await bot.change_presence(status=discord.Status.idle, activity=discord.Game(name='!!명령어'))
         
 
     
