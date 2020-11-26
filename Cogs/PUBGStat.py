@@ -20,11 +20,14 @@ class PUBGStat(commands.Cog, name='PUBGStat'):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name='배그')
-    async def pubg(self, ctx, userName, mode='tpp'):
+    @commands.command(name='배그', usage='!!배그 닉네임')
+    async def pubg(self, ctx, userName=None, mode='tpp'):
+        if(userName == None):
+            await ctx.send('검색할 닉네임을 입력해주세요')
+            return
         html = requests.get(bgstatUserURL + userName + koreanParam).text
         bs = BeautifulSoup(html, 'html.parser')
-        
+
         if(not bs.select('.not_found')):
             
             isStatFind = False

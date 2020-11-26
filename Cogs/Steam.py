@@ -24,7 +24,10 @@ class Steam(commands.Cog, name='Steam'):
         self.bot = bot
     
     @commands.command(name='스팀유저')
-    async def suser(self, ctx, userName):
+    async def suser(self, ctx, userName=None):
+        if(userName == None):
+            await ctx.send('검색할 닉네임을 입력해주세요')
+            return
         userURL = ''
         if len(userName) == 17 and userName.isdigit():
             userURL = userFindURL_ID + userName + koreanParam
@@ -63,7 +66,10 @@ class Steam(commands.Cog, name='Steam'):
         
         
     @commands.command(name='게임')
-    async def sgame(self, ctx, *, gameName):
+    async def sgame(self, ctx, *, gameName=None):
+        if(gameName == None):
+            await ctx.send('검색할 게임을 입력해주세요')
+            return
         html = requests.get(gameFindURL + gameName).text
         bs = BeautifulSoup(html, 'html.parser')
         
@@ -115,7 +121,10 @@ class Steam(commands.Cog, name='Steam'):
             
     
     @commands.command(name='게임검색')
-    async def sgsearch(self, ctx, *, gameName):
+    async def sgsearch(self, ctx, *, gameName=None):
+        if(gameName == None):
+            await ctx.send('검색할 게임을 입력해주세요')
+            return
         html = requests.get(gameFindURL + gameName).text
         bs = BeautifulSoup(html, 'html.parser')
         

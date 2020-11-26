@@ -16,7 +16,10 @@ class LoLStat(commands.Cog, name='LoLStat'):
         self.bot = bot
     
     @commands.command(name='롤')
-    async def lol(self, ctx, *, userName):
+    async def lol(self, ctx, *, userName=None):
+        if(userName == None):
+            await ctx.send('검색할 닉네임을 입력해주세요')
+            return
         html = requests.get(lolstatUserURL + userName).text
         bs = BeautifulSoup(html, 'html.parser')
         
