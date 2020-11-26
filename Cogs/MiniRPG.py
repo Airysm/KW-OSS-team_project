@@ -102,8 +102,8 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
         embed = discord.Embed(title='MiniRPG 실행어')
         embed.add_field(name='공격', value='\n'.join(['STR * 1']), inline=True)
         embed.add_field(name='힐', value='\n'.join(['INT * 2']), inline=True)
-        embed.add_field(name='스킬', value='\n'.join(['INT * 3 \n쿨타임 3초']), inline=True)
-        embed.add_field(name='전격', value='\n'.join(['1턴 행동불가']), inline=True)
+        embed.add_field(name='스킬', value='\n'.join(['INT * 3 \n쿨타임 3턴']), inline=True)
+        embed.add_field(name='전격', value='\n'.join(['1턴 행동불가\n쿨타임 5턴']), inline=True)
         await ctx.send(embed=embed)
         sleep(1)
 
