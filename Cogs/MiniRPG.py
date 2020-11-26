@@ -72,9 +72,9 @@ man = Hero()
 dragon = Boss()
 
 
-class MiniRPG(commands.Cog, name='MiniRPG'):
+class MiniRPG(commands.Cog, name='미니게임'):
 
-    @commands.command(name='RPG')
+    @commands.command(name='미니게임')
     async def Game_init(self, ctx):
         await ctx.send('시작됩니다.')
         sleep(1)
@@ -182,6 +182,9 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
                                 await ctx.send(embed=embed)
                                 sleep(1)
                             check = 1  # 자신의 턴을 무사히 완료
+                    elif(msg.content =='종료'):
+                        await ctx.send('게임이 종료됩니다.')
+                        return
                     else:
                         await ctx.send('제대로 된 행동을 하지 못했습니다!')
             # 자신의 턴이 제대로 완료 되었으면 보스의 턴 실행
@@ -249,7 +252,7 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
             await ctx.send('게임이 비정상적으로 종료되었습니다.')
         game_set = 0  # 게임이 끝남
 
-    @commands.command(name='RPG설명')
+    @commands.command(name='미니게임설명')
     async def skill_info(self, ctx):
         embed = discord.Embed(description='보스와 한번씩 번갈아가며 행동을 취하는 턴제 미니게임입니다.')
         await ctx.send(embed=embed)
