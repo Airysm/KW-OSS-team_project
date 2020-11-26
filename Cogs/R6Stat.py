@@ -29,7 +29,10 @@ class R6Stat(commands.Cog, name='R6Stat'):
         self.bot = bot
     
     @commands.command(name='레식')
-    async def r6stat(self, ctx, userName, section='overall'):
+    async def r6stat(self, ctx, userName=None, section='overall'):
+        if(userName == None):
+            await ctx.send('검색할 닉네임을 입력해주세요')
+            return
         html = requests.get(r6statURL + userName + '/' + self.platform + '/').text
         bs = BeautifulSoup(html, 'html.parser')
         
