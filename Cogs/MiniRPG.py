@@ -86,7 +86,8 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
 
         # embed = discord.Embed(title='원하는 스킬을 선택하세요', description='?', color=0x147AF3)
         # message = await ctx.send(embed=embed)
-        await ctx.send('스탯이 랜덤하게 결정됩니다.')
+        embed = discord.Embed(description='스탯이 랜덤하게 결정됩니다.')
+        await ctx.send(embed=embed)
         sleep(1)
         embed = discord.Embed(title='유저 스탯')
         embed.add_field(name='STR', value='\n'.join([str(man.STR)]), inline=True)
@@ -97,6 +98,7 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
         embed = discord.Embed(description='\"1번째 당신의 턴\"')
         await ctx.send(embed=embed)
 
+        # 사용 가능 행동 설명
         embed = discord.Embed(title='MiniRPG 실행어')
         embed.add_field(name='공격', value='\n'.join(['STR * 1']), inline=True)
         embed.add_field(name='힐', value='\n'.join(['INT * 2']), inline=True)
@@ -115,8 +117,10 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
                 man.shock = False  # 마비 풀림
             else:
                 msg = await ctx.bot.wait_for('message')
-                if (ctx.author == msg.author and ctx.channel == msg.channel):  # 명령어의 사용자의 메세지만 취급
-                    if (msg.content.startswith('!!')):  # 다른 명령어를 받을 경우 패스
+                if (ctx.author == msg.author and ctx.channel == msg.channel):  # 다음 메세지의 주인과 채널을 체크
+                    if (msg.content == '!!RPG'):  # RPG 를 재실행 하려고 할 때 기존 RPG를 종료
+                        break
+                    elif(msg.content.startswith('!!')): # 다른 명령어를 받을 때 턴을 진행하지 않음
                         continue
                     elif (msg.content == '힐'):  # 자신에게 힐
                         embed = discord.Embed(description='당신은 자신의 체력을 회복했습니다.')
@@ -238,9 +242,11 @@ class MiniRPG(commands.Cog, name='MiniRPG'):
         if (man.HP <= 0):  # 유저의 HP 가 0 이하일 경우
             embed = discord.Embed(description='당신은 쓰러졌습니다.. 패배.')
             await ctx.send(embed=embed)
-        else:  # 보스의 HP 가 0 이하일 경우
+        elif(dragon.HP <= 0):  # 보스의 HP 가 0 이하일 경우
             embed = discord.Embed(description='보스를 쓰러트렸습니다! 성공!')
             await ctx.send(embed=embed)
+        else:
+            await ctx.send('게임이 비정상적으로 종료되었습니다.')
         game_set = 0  # 게임이 끝남
 
     @commands.command(name='RPG설명')
