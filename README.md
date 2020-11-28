@@ -35,3 +35,8 @@
 2. cmd 창에 ```pip install -r requirements.txt``` 명령을 실행해서 필요한 모듈 설치
 3. 파이썬 환경변수가 제대로 설정되었는지 확인
 4. ```.env``` 파일의 이름이 제대로 설정되었는지 확인
+
+## Music 명령어가 실행되지 않을때!
+1. cmd ckddp ```pip install youtube_dl``` 명령을 실행해서 필요한 모듈 설치
+2. FFmpeg 필요하니 해당 url통해서 설치하기```https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full-shared.7z``` 
+3. FFmpeg 환경변수가 제대로 설정되었는지 확인
