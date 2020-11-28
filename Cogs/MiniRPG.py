@@ -72,7 +72,7 @@ man = Hero()
 dragon = Boss()
 
 
-class MiniRPG(commands.Cog, name='MiniRPG'):
+class MiniRPG(commands.Cog, name='미니게임'):
 
     @commands.command(name='미니게임')
     async def Game_init(self, ctx):
