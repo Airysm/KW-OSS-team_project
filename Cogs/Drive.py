@@ -16,7 +16,7 @@ DRIVE_FILE_DATA = 'File_Data.json'
 
 
 
-class Drive(commands.Cog, name='Drive'):
+class Drive(commands.Cog, name='파일'):
     def __init__(self, bot):
         self.bot = bot
         if not os.path.exists(DATA_PATH):

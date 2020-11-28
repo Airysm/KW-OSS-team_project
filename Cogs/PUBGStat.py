@@ -16,7 +16,7 @@ rankSize = 4
 FPP_Text = '(FPP)'
 
         
-class PUBGStat(commands.Cog, name='PUBGStat'):
+class PUBGStat(commands.Cog, name='배그전적'):
     def __init__(self, bot):
         self.bot = bot
     

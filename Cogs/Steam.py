@@ -16,7 +16,7 @@ gameFindURL=f'https://store.steampowered.com/search/{koreanParam}&term='
 
 numberEmoji = [ '0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟' ]
         
-class Steam(commands.Cog, name='Steam'):
+class Steam(commands.Cog, name='스팀'):
     gameSearchSize = 5
     gameSearchSizeMax = 10
     
@@ -135,7 +135,7 @@ class Steam(commands.Cog, name='Steam'):
             return
         
         if titleSize > self.gameSearchSize:
-            titleSize = self.gameSearchSize + 1
+            titleSize = self.gameSearchSize
         titleStr = '0. 취소\n'
         for i, t in enumerate(titles[:titleSize]):
             titleStr += f'{i+1}. {t.text}\n'
@@ -163,7 +163,7 @@ class Steam(commands.Cog, name='Steam'):
         
         await message.clear_reactions()
         
-        result = bs.select('#search_resultsRows > a')[selectIndex]
+        result = bs.select('#search_resultsRows > a')[selectIndex-1]
         
         gameURL = result.get('href')
         gameURL = '/'.join(gameURL.split('/')[:-1]) + koreanParam
