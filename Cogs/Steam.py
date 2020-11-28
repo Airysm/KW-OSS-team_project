@@ -16,7 +16,7 @@ gameFindURL=f'https://store.steampowered.com/search/{koreanParam}&term='
 
 numberEmoji = [ '0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟' ]
         
-class Steam(commands.Cog, name='Steam'):
+class Steam(commands.Cog, name='스팀'):
     gameSearchSize = 5
     gameSearchSizeMax = 10
     

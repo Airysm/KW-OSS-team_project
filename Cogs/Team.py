@@ -6,7 +6,7 @@ from discord.ext import commands
 import random
 
 
-class Team(commands.Cog):
+class Team(commands.Cog, name='팀'):
     teamSize = 0
     playerSize = 0
     

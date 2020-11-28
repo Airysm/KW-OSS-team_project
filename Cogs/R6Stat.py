@@ -22,7 +22,7 @@ TEAM_PATH = 'Team'
 R6USER_DATA = 'R6_User.json'
 
 
-class R6Stat(commands.Cog, name='R6Stat'):
+class R6Stat(commands.Cog, name='레식전적'):
     platform = platformList[0]
     
     def __init__(self, bot):

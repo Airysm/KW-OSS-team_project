@@ -11,7 +11,7 @@ lolstatUserURL = 'https://www.op.gg/summoner/userName='
 no_data = 'unranked'
 
         
-class LoLStat(commands.Cog, name='LoLStat'):
+class LoLStat(commands.Cog, name='롤전적'):
     def __init__(self, bot):
         self.bot = bot
     
