@@ -11,11 +11,7 @@ class Helper(commands.Cog):
     
     @commands.command(name='명령어', help='도움말', usage='!!help')
     async def help_command(self, ctx, func=None):
-<<<<<<< HEAD
-        cogList = ['R6Stat', 'LoLStat', 'PUBGStat', 'Steam', 'Team', 'MiniRPG', 'Drive','Food','Music']
-=======
-        cogList = ['R6Stat', 'LoLStat', 'PUBGStat', 'Steam', 'Team', '미니게임', 'Drive']
->>>>>>> 471223546e475db803ada23530dfa620e3d2a5af
+        cogList = ['R6Stat', 'LoLStat', 'PUBGStat', 'Steam', 'Team', '미니게임', 'Drive', 'Food', 'Music']
         if func is None:
             embed = discord.Embed(title='Help', description='(╯°□°）╯︵ ┻━┻')
             for x in cogList:
